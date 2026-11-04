@@ -14,9 +14,9 @@ export async function initializePayment(req, res) {
     if (
       !productId ||
       !customerName ||
-      !customerEmail ||
-      typeof customerName !== "string" ||
-      typeof customerEmail !== "string"
+      !customerEmail 
+      // typeof customerName !== "string" ||
+      // typeof customerEmail !== "string"
     ) {
       return res.status(400).json({
         success: false,
@@ -45,7 +45,7 @@ export async function initializePayment(req, res) {
       .single();
       console.log("Supabase Product Result:", { product, productError }); 
 
-    if (!productError || !product) {
+    if (productError || !product) {
       return res.status(400).json({
         success: false,
         message: "product not found or unavailable",

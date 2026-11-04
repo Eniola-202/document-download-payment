@@ -183,14 +183,14 @@ export async function downloadDocument(req, res) {
             .eq("id", order.id);
 
         if (countError) throw countError;
-
-        return res.status(200).json({
-            success: true,
-            message: "Download link generated successfully",
-            document_name: product.name,
-            download_url: signedUrlData.signedUrl,
-            expires_in: 300
-        });
+        return res.redirect(signedUrlData.signedUrl);
+        // return res.status(200).json({
+        //     success: true,
+        //     message: "Download link generated successfully",
+        //     document_name: product.name,
+        //     download_url: signedUrlData.signedUrl,
+        //     expires_in: 300
+        // });
 
     } catch (error) {
         console.error("Download Document Error:", error.message);
