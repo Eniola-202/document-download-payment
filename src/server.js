@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 import supabase from "./config/supabase.js";
 import productRoutes from "./routes/product-routes.js";
 import paymentRoutes from './routes/payment-routes.js';
-import crypto from 'crypto';
 import downloadRoutes from './routes/downloadRoutes.js';
 import webhookroutes from './routes/webhookroutes.js';
+import commentRoutes from './routes/commentroutes.js';
 
 dotenv.config();
 
@@ -70,7 +70,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/payments", paymentRoutes)
 app.use("/api/orders", downloadRoutes);
 app.use("/api/payments/webhooks", webhookroutes)
-
+app.use("/api/comments", commentRoutes);
 
 app.listen(PORT, function () {
   console.log(`API server running on port ${PORT}`);
