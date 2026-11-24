@@ -90,7 +90,7 @@ export async function handlePaymentWebhook(req, res) {
     // Confirm the transaction details
     if (
       transaction.reference !== reference ||
-      Number(transaction.amount) !== Number(order.amount_kobo) ||
+      Number(transaction.amount) !== Number(order.amount_cents) ||
       transaction.currency !== order.currency ||
       transaction.status !== "success"
     ) {

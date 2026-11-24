@@ -39,7 +39,7 @@ export async function initializePayment(req, res) {
 
     const { data: product, error: productError } = await supabase
       .from("products")
-      .select("id, name,price_kobo, currency, is_active")
+      .select("id, name,price_cents, currency, is_active")
       .eq("id", productId)
       .eq("is_active", true)
       .single();
@@ -52,9 +52,9 @@ export async function initializePayment(req, res) {
       });
     }
     if (
-      !Number.isSafeInteger(product.price_kobo) ||
-      product.price_kobo <= 0 ||
-      product.currency !== "NGN"
+      !Number.isSafeInteger(product.price_cents) ||
+      product.price_cents <= 0 ||
+      product.currency !== "USD"
     ) {
       return res.status(400).json({
         success: false,
@@ -68,7 +68,7 @@ export async function initializePayment(req, res) {
         product_id: product.id,
         customer_name: name,
         customer_email: email,
-        amount_kobo: product.price_kobo,
+        amount_cents: product.price_cents,
         currency: product.currency,
         status: "pending",
         paystack_reference: reference,
@@ -84,7 +84,7 @@ export async function initializePayment(req, res) {
     const { error: paymentError } = await supabase.from("payments").insert({
       order_id: order.id,
       reference: reference,
-      amount_kobo: product.price_kobo,
+      amount_cents: product.price_cents,
       currency: product.currency,
       status: "pending",
     });
@@ -94,7 +94,7 @@ export async function initializePayment(req, res) {
 
     const payment = await initializeTransaction({
       email: email,
-      amount: String(product.price_kobo),
+      amount: String(product.price_cents),
       currency: product.currency,
       reference: reference,
       callback_url: process.env.PAYMENT_CALLBACK_URL,
@@ -173,7 +173,7 @@ export async function verifyPayments(req, res) {
 
     if (
       transaction.reference !== reference ||
-      Number(transaction.amount) !== Number(order.amount_kobo) ||
+      Number(transaction.amount) !== Number(order.amount_cents) ||
       transaction.currency !== order.currency
     ) {
       return res.status(400).json({
