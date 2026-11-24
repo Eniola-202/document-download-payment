@@ -6,7 +6,7 @@ export async function getProducts(req, res) {
   try {
     const { data, error } = await supabase
       .from("products")
-      .select(`id, name, slug, description, price_kobo, currency, created_at`)
+      .select(`id, name, slug, description, price_cents, currency, created_at`)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
     if (error) {
@@ -33,7 +33,7 @@ export async function getProductSlug(req, res) {
 
     const { data, error } = await supabase
       .from("products")
-      .select(`id, name, slug, description, price_kobo, currency, created_at`)
+      .select(`id, name, slug, description, price_cents, currency, created_at`)
       .eq("slug", slug)
       .eq("is_active", true)
       .single();
